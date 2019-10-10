@@ -10,7 +10,7 @@ export class post {
   constructor(){
     this.from = "Carlos";
     this.to = "Everyone";
-    this.createdOn = new Date();
+    this.createdOn = new Date(); // current date/time
   }
     //methods
 }
