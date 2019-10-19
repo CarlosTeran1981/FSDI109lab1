@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Friend } from '../models/Friend';
+import { DataService } from '../service/data.service';
 
 @Component({
   selector: 'app-tab3',
@@ -9,12 +10,41 @@ import { Friend } from '../models/Friend';
 export class Tab3Page {
 
   model : Friend = new Friend();
+  friendsToDisplay : Friend[] = [];
 
-  constructor() {}
+  constructor(private data : DataService) {
+    data.getAllFriends().subscribe(list => {
+
+      //clear
+      this.friendsToDisplay = [];
+      //filter to see only my friends
+
+      /* 
+      travel the list array
+      get each friend there
+      compare if friends.belongsTo its equal to my userName ( "Carlos" )
+      then, push the friend in to this.friendsToDisplay array*/
+
+      for(let i=0; i< list.length; i++){
+        let friend = list[i];
+        if(friend.belongTo == "Carlos"){
+          this.friendsToDisplay.push(friend);
+        }
+      }
+
+      // sort the array
+      this.friendsToDisplay =this.friendsToDisplay.sort ((left,right) => {
+        if(left.name.toLowerCase() < right.name.toLowerCase()) return -1;
+        else return 1;
+      });
+    });
+  }
 
   register(){
-    console.log("Register Friend");
+    
     //send the object to data service
+
+    this.data.saveFriend(this.model);
 
     //clear form
     this.model = new Friend();
