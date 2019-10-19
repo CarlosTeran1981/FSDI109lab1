@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Friend } from '../models/Friend';
 import { DataService } from '../service/data.service';
+import { SharedService } from '../service/shared.service';
 
 @Component({
   selector: 'app-tab3',
@@ -12,7 +13,7 @@ export class Tab3Page {
   model : Friend = new Friend();
   friendsToDisplay : Friend[] = [];
 
-  constructor(private data : DataService) {
+  constructor(private data : DataService, private shared : SharedService) {
     data.getAllFriends().subscribe(list => {
 
       //clear
@@ -22,12 +23,13 @@ export class Tab3Page {
       /* 
       travel the list array
       get each friend there
-      compare if friends.belongsTo its equal to my userName ( "Carlos" )
+      compare if friends.belongsTo its equal to my userName ( " " )
       then, push the friend in to this.friendsToDisplay array*/
 
       for(let i=0; i< list.length; i++){
         let friend = list[i];
-        if(friend.belongTo == "Carlos"){
+        console.log(list, "form db")
+        if(friend.belongsTo == shared.userName){
           this.friendsToDisplay.push(friend);
         }
       }
@@ -41,6 +43,8 @@ export class Tab3Page {
   }
 
   register(){
+    // set the belongsTo to model
+    this.model.belongsTo = this.shared.userName;
     
     //send the object to data service
 
@@ -48,6 +52,11 @@ export class Tab3Page {
 
     //clear form
     this.model = new Friend();
+  }
+
+  unfriend(friendToRemove : Friend){
+    console.log('remove', friendToRemove);
+    this.data.removeFriend( friendToRemove.fbId );
   }
 
 }

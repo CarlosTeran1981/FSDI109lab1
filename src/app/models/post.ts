@@ -1,3 +1,5 @@
+import { SharedService } from '../service/shared.service';
+
 export class post {
     //class attributes
     public message : string;
@@ -7,8 +9,7 @@ export class post {
     public imageUrl: string;
 
     //constructor
-  constructor(){
-    this.from = "Carlos";
+  constructor(){    
     this.to = "Everyone";
     this.createdOn = new Date(); // current date/time
   }

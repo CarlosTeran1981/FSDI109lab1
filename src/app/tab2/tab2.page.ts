@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { post } from '../models/post';
 import { DataService } from '../service/data.service';
 import { Friend } from '../models/Friend';
+import { SharedService } from '../service/shared.service';
 
 @Component({
   selector: 'app-tab2',
@@ -12,7 +13,7 @@ export class Tab2Page {
   p: post = new post();
   friendsToDisplay : Friend[] = [];
 
-  constructor(private data : DataService){
+  constructor(private data : DataService, private shared : SharedService){
     data.getAllFriends().subscribe(list => {
     //clear
     this.friendsToDisplay = [];
@@ -20,7 +21,7 @@ export class Tab2Page {
 
     for(let i=0; i< list.length; i++){
       let friend = list[i];
-      if(friend.belongTo == "Carlos"){
+      if(friend.belongsTo == shared.userName){
         this.friendsToDisplay.push(friend);
       }
     }
@@ -38,6 +39,9 @@ export class Tab2Page {
   post() {
     console.log('Save btn pressed');
     console.log(this.p);
+
+    // assign default from
+    this.p.from = this.shared.userName;
   
 
     // save the post

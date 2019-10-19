@@ -3,6 +3,7 @@ import { DataService } from '../service/data.service';
 import { post } from '../models/post';
 import { Subscriber } from 'rxjs';
 import { firestore } from 'firebase';
+import { SharedService } from '../service/shared.service';
 
 @Component({
   selector: 'app-tab1',
@@ -13,7 +14,7 @@ export class Tab1Page {
 
   postToShow : post[] = [];
 
-  constructor(private data : DataService) {
+  constructor(private data : DataService, shared : SharedService) {
 
     this.data.getAllPost().subscribe(res => {
       this.postToShow = [];
@@ -24,7 +25,7 @@ export class Tab1Page {
           let co : any = post.createdOn;
           post.createdOn = new firestore.Timestamp(co.seconds, co.nanoseconds).toDate();
 
-          if(post.to == "Everyone" || post.to == "Carlos" || post.from == "Carlos"){
+          if(post.to == "Everyone" || post.to == shared.userName || post.from == shared.userName){
             this.postToShow.push(post);
           }      
       }

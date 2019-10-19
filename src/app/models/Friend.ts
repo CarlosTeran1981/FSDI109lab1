@@ -1,8 +1,10 @@
+import { SharedService } from '../service/shared.service';
+
 export class Friend{
     public name : string = ""; // <-- the actual name of friend
-    public belongTo : string = ""; // <-- to specify that it belong to me
+    public belongsTo : string = ""; // <-- to specify that it belong to me
 
-    constructor(){
-        this.belongTo = "Carlos";
-    }
+    public fbId : string = '';
+
+    constructor() {}
 }
